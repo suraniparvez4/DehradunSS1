@@ -1,0 +1,1322 @@
+﻿
+@{
+    Layout = "";
+}
+@*@page
+@model DehradunSS.Web.Pages.CityGis.CityGisModel
+@{
+}
+@{
+    Layout = "";
+}*@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @*<link rel="stylesheet" href="2.css">*@
+    <link href="~/css/2.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>Deheradun</title>
+    <style>
+        #google_translate_element select {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            border-radius: 5px;
+            font-size: 15px;
+            border: 0.5px solid #333;
+        }
+
+        .goog-logo-link {
+            display: none;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+        }
+
+            .ol-popup:after,
+            .ol-popup:before {
+                top: 100%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+
+            .ol-popup:after {
+                border-top-color: white;
+                border-width: 10px;
+                left: 48px;
+                margin-left: -10px;
+            }
+
+            .ol-popup:before {
+                border-top-color: #cccccc;
+                border-width: 11px;
+                left: 48px;
+                margin-left: -11px;
+            }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+            .ol-popup-closer:after {
+                content: "✖";
+            }
+
+        .ol-tooltip {
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            color: white;
+            padding: 4px 8px;
+            opacity: 0.7;
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        .ol-tooltip-measure {
+            opacity: 1;
+            font-weight: bold;
+        }
+
+        .ol-tooltip-static {
+            background-color: #ffc107;
+            color: #333;
+            border: 1px solid white;
+        }
+
+            .ol-tooltip-measure:before,
+            .ol-tooltip-static:before {
+                border-top: 6px solid rgba(0, 0, 0, 0.5);
+                border-right: 6px solid transparent;
+                border-left: 6px solid transparent;
+                content: "";
+                position: absolute;
+                bottom: -6px;
+                margin-left: -7px;
+                left: 50%;
+            }
+
+            .ol-tooltip-static:before {
+                border-top-color: #333;
+            }
+
+        body {
+            background-color: #f2f2f2;
+        }
+
+        nav i:hover,
+        nav a:hover {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        label {
+            font-size: 15px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .map {
+            width: 100%;
+            height: 550px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- MAIN UI -->
+    <nav id="changenavfoot" class="navbar fixed-bottom navbar-expand-lg navbar-light bg-dark" style="background: royalblue;margin-left:38%; margin-right:38%;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a id="home" class="nav-link" href="#"> <i class="fa fa-home" style="font-size:30px;"></i></a>
+                </li>
+                <li id="Previous" class="nav-item"><a class="nav-link"><i class="fa fa-undo" style="font-size:30px;"></i></a></li>
+                <li id="Next" class="nav-item"> <a class="nav-link"><i class="fa fa-repeat" style="font-size:30px;"></i></a></li>
+                <li id="ZoomInbtn" class="nav-item"> <a class="nav-link"><i class="fa fa-plus" style="font-size:30px;"></i></a></li>
+                <li id="ZoomOutbtn" class="nav-item"> <a class="nav-link"><i class="fa fa-minus" style="font-size:30px;"></i></a></li>
+                <li id="ClearSelection" class="nav-item"><a class="nav-link"><i class="fa fa-eye-slash" style="font-size:30px;"></i></a></li>
+                <li id="Currentlocation2" class="nav-item"><a class="nav-link"><i class="fa fa-crosshairs" style="font-size:30px;"></i></a></li>
+                <li id="blink" class="nav-item"><a class="nav-link"><i class="fa fa-unlink" style="font-size:30px;"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- MAIN UI FINISH -->
+    <!-- <nav class="navbar navbar-expand-lg  navbar-light bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+          </span>
+      </button>
+        <div class="collapse  navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav justify-content-between w-100">
+                <a id="home" class="nav-item nav-link"><i class="fa fa-home" style="font-size:30px;"></i><br>Home</a>
+                <a id="Identify" class="nav-item nav-link"><i class="fa fa-info" style="font-size:30px;" ></i><br>Identify</a>
+                <a id="Image" class="nav-item nav-link"><i class="fa fa-globe" style="font-size:30px;"></i><br>Image</a>
+                <a id="Coordinates" class="nav-item nav-link"><i class="fa fa-map" style="font-size:30px;" ></i><br>Coordinates</a>
+                <div>
+                    <div>
+                        <dialog id="myFirstDialog" style="background-color:#F4FFEF;border:1px dotted black; z-index: 2;">
+
+                            <label>Latitude</label>
+                            <input class="form-control" type="text" name="Lati" id="Lati"><label>Longitude</label>
+                            <input class="form-control" type="text" name="Long" id="Long"><br>
+                            <button class="btn btn-success" id="Search">Search</button>
+                            <button class="btn btn-danger" id="hide">Close</button>
+                        </dialog>
+                    </div>
+                </div>
+                <a id="Pan" class="nav-item nav-link"><i class="fa fa-hand-paper-o" style="font-size:30px;"></i><br>Pan</a>
+                <a id="Account" class="nav-item nav-link"><i class="fa fa-user-circle" style="font-size:30px;"></i><br>User</a>
+            </div>
+        </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark" id="changenav">
+        <!-- hamburger button that toggles the navbar-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <!-- navbar links -->
+        <div class="collapse  navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a id="Identify" class="nav-item nav-link"><i class="fa fa-info" style="font-size:30px;"><br> <label for="Identify">  IDENTIFY</label></i></a>
+                <a id="PAN" class="nav-item nav-link"> <i class="fa fa-hand-paper-o" style="font-size:30px;"><br> <label for="Pan"> PAN</label></i></a>
+                <a id="coordinate" class="nav-item nav-link"><i class="fa fa-map-o" style="font-size:30px;"><br> <label for="Coordinates"> COORDINATES</label></i></a>
+                <a id="line" class="nav-item nav-link"><i class="fa fa-line-chart" style="font-size:30px;"><br> <label for="Length"> LENGTH</label></i></a>
+                <a id="area" class="nav-item nav-link"><i class="fa fa-object-ungroup" style="font-size:30px;"><br> <label for="Area"> AREA</label></i></a>
+                <a id="image" class="nav-item nav-link" style="color: white;"><i class="fa fa-globe" style="font-size:30px;"><br> <label for="Image">  IMAGE</label></i></a>
+                <a id="Print" href="javascript:window.print();" class="nav-item nav-link" style="color: white;"><i class="fa fa-print" style="font-size:30px;"><br> <label for="Print"> PRINT</label></i></a>
+                <a id="help" href="http://sc1dehradun.sgligis.com/Help/guest/index.htm#t=Dehradun_Smart_City_Portal%2FIntroduction.htm" target="_blank" class="nav-item nav-link" style="color: white;"><i class="fa fa-handshake-o" style="font-size:30px;"><br> <label for="Help"> HELP</label></i></a>
+                <a id="bookmark" onclick="ShowBookmark()" class="nav-item nav-link" style="color: white;"><i class="fa fa-bookmark" style="font-size:30px;"><br> <label for="Bookmark"> Bookmark</label></i></a>
+                <a id="AdvanceSearch" onclick="advanceopen()" class="nav-item nav-link" style="color: white;"><i class="fa fa-search-plus" style="font-size:30px;"><br> <label for="AdvanceSearch"> Advance Search</label></i></a>
+                <!-- <a id="PredefineQuery" onclick="predefinedopen()" class="nav-item nav-link" style="color: white;"><i class="fa fa-files-o" style="font-size:30px;"><br> <label for="PredefineQuery"> Predefine Query</label></i></a> -->
+                <a class="nav-item nav-link" onclick="openNav2()"> <i class="fa fa-map-marker" style="font-size:30px;"><br> <label for="Around"> Around Me</label> </i></a>
+                <a id="" onclick="changenavbar()" class="nav-item nav-link"><i class="fa fa-refresh" style="font-size:30px;"><br> <label for="theme"> Change Theam</label></i></a>
+                <a id="LogOut" class="nav-item nav-link" style="color: white;"><i class="fa fa-user" style="font-size:30px;"><br> <label for="Account"> Log Out</label></i></a>
+            </div>
+        </div>
+    </nav>
+    <div id="mySidenav1" class="sidenav1" style="z-index: 2;position: absolute;">
+        <i class="fa fa-search" style="font-size: 25px ;">  Around Me </i>
+        <a href="javascript:void(0)" class="closebtn" style="color: #333;" onclick="closeNav2()">&times;</a>
+        <div style="z-index: 1;position: absolute;">
+            <details>
+                <summary> <i class="fa fa-map-marker" style="color: #333;font-size: 20px;"></i> Around Me</summary>
+                <div style="padding-left: 25px;">
+                    <input type="checkbox" name="Aroundme" id="EmergencyServices"> Emergency Services
+                    <div id="ShowHospital" style="color: white;font-size: 14px;">
+                    </div>
+                    <div>
+                        <table id="TShow"></table>
+                    </div>
+                    <input type="checkbox" name="Aroundme1" id="TouristAttraction"> Tourist Attraction <br>
+                    <div id="TouristShow" style="color: white;font-size: 14px;"></div>
+                    <div>
+                        <table id="TourShow"></table>
+                    </div>
+                    <input type="checkbox" name="Aroundme2" id="FunEntertainment"> Fun & Entertainment <br>
+                    <div id="FunEnterShow" style="color: white;font-size: 14px;"></div>
+                    <div>
+                        <table id="FunShow"></table>
+                    </div>
+                    <div>
+                        <input type="number" name="LengthArea" id="areaforaroundme" required placeholder="In Meter" class="form-control">
+                    </div>
+                    <input type="button" class="btn btn-success" value="Go!" id="go1" onclick="findaround()">
+                    <input type="button" class="btn btn-danger" value="Clear!" id="go">
+                    <div id="ForHospital"></div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- LAYER -->
+    <div style="z-index: 2; position: absolute;overflow-y: scroll;">
+        <div id="mySidepanel" class="sidepanel">
+            <a href="javascript:void(0)" class="closebtn" style="color: #333;" onclick="closeNav()">×</a>
+            <!-- IMAGE -->
+            <h3 style="text-align: center;"> LAYERS <i class="fa fa-database" style="font-size: 25px;color: #333;"></i></h3>
+            <div style="width: 100%;color: #F4FFEF;text-align: center;">
+                <span>
+                    <a id="AllLayerOff" style="font-size: 14px;text-decoration: none;">ALL LAYER OFF </a>
+                </span>
+                <span> | </span>
+                <span>
+                    <a id="resetlayer" style="font-size: 14px;"> RESET LAYER</a>
+                </span>
+            </div>
+            <div style="margin-left: 5%; margin-bottom: 10%; background: white; overflow-y: scroll; height:80%; width: 90%;">
+                <!-- <div>
+                    <input type="text" name="SearchLayer" id="SearchLayer" class="form-text" placeholder="Search" onkeyup="myFunction()">
+                </div> -->
+                <!-- <div>
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div> -->
+                <form id="LayerForm">
+
+                    <details>
+
+                        <summary>
+                            <input type="checkbox" name="Img" id="AgraImg" /> Dehradun Image <br />
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="Img" id="dehra" /> OSM <br />
+                            <input type="checkbox" name="Img" id="Satellite" /> Dehradun Image <br />
+                            <input type="checkbox" name="Img" id="Basemap" /> Dehradun Basemap
+                        </div>
+                    </details>
+
+                    <!-- Adminisrative Boundaries  -->
+                    <details id="AdminBoundLayer">
+                        <summary>
+                            <input type="checkbox" name="adminbound" id="AdminBound"> Adminisrative Boundaries <br>
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <!-- <input type="checkbox" name="adminbound" id="wardbound">Ward Boundaries<br>
+                            <input type="checkbox" name="adminbound" id="boundzone">Boundaries Zone <br> -->
+                            <input type="checkbox" name="adminbound" id="MlaConsBound"> Boundaries Municipal<br>
+                            <!-- <input type="checkbox" name="adminbound" id="parcelbound">Parcel Boundaries <br>
+                            <input type="checkbox" name="adminbound" id="grid25m">Grid 250 Meter<br>
+                            <input type="checkbox" name="adminbound" id="grid1km"> Grid 1 Kilometer<br>
+                            <input type="checkbox" name="adminbound" id="boundaoi">Boundaries AOI<br> -->
+                        </div>
+                    </details>
+                    <!-- Building -->
+                    <details id="BuildingLayer">
+                        <summary>
+                            <input type="checkbox" name="Buildings" id="WaterBodies"> Building
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="" id="a1"> State Goverment Building <br>
+                            <input type="checkbox" name="" id="a2"> Central Goverment Building <br>
+                            <!-- <input type="checkbox" name="" id="buildfootprint">Building Footprints <br>
+                            <input type="checkbox" name="" id="vacntplot">Vacnt Plot -->
+                        </div>
+                    </details>
+                    <!-- ITMS -->
+                    <!-- <details>
+                    <summary>
+                        <input type="checkbox" name="RecRate" id="RecRate">ITMS
+                    </summary>
+                    <div style="padding-left: 7%;">
+                        <input type="checkbox" name="" id="">Public WIFI <br>
+                        <input type="checkbox" name="" id="">CCTV Location <br>
+                        <input type="checkbox" name="" id="">CCTV Junction<br>
+
+                    </div>
+                    </details> -->
+                    <!-- ESTATE MANAGEMENT -->
+                    <!-- <details>
+                    <summary>
+                        <input type="checkbox" name="Hospital" id="Hospital">Estate Management <br>
+                    </summary>
+                    <div style="padding-left: 7%;">
+                        <input type="checkbox" name="Hospital" id="govthosp"><br>
+                        <input type="checkbox" name="Hospital" id="pvthosp">
+                    </div>
+                    </details> -->
+                    <!-- City -->
+                    <details id="StromWaterLayer">
+                        <summary>
+                            <input type="checkbox" name="stormwater" id="Building"> Storm Water
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="stormwater" id="b1"> Drainage Netowrk<br>
+                            <input type="checkbox" name="stwCatchmentbound" id="b2"> STW Catchment Boundary<br>
+                            <input type="checkbox" name="stwpoint" id="b3"> STW Point <br>
+                        </div>
+                    </details>
+                    <!-- GREEN AREA -->
+                    <details id="GreenAreaLayer">
+                        <summary>
+                            <input type="checkbox" name="GreenArea" id="Railway"> Green Areas
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="farmhouse" id="d1"> Farm House<br>
+                            <input type="checkbox" name="forest" id="d2"> Forest<br>
+                            <input type="checkbox" name="greenarea" id="d3"> Green Area <br>
+                            <input type="checkbox" name="agric" id="d4"> Agriculture
+                        </div>
+                    </details>
+                    <!-- Road -->
+                    <details id="RoadLayer">
+                        <summary>
+                            <input type="checkbox" name="road" id="Sewerage">Road
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="road" id="f1">Parking<br>
+                            <input type="checkbox" name="road" id="f2"> Petrol Pump<br>
+                            <input type="checkbox" name="road" id="f3">Bridges And Flyover <br>
+                            <input type="checkbox" name="road" id="f4">Traffic Island <br>
+                            <input type="checkbox" name="road" id="f5">Traffic Junction <br>
+                            <input type="checkbox" name="road" id="f6">Bus Depots
+                        </div>
+                    </details>
+                    <!-- Banking And Postal -->
+                    <details id="BankPostalLayer">
+                        <summary>
+                            <input type="checkbox" name="bankpostal" id="WaterSupply">Banking and Postal Facilitys
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="bankpostal" id="g1">Banks<br>
+                            <input type="checkbox" name="bankpostal" id="g2"> Post Office<br>
+                            <input type="checkbox" name="bankpostal" id="g3">ATMs <br>
+                        </div>
+                    </details>
+                    <!-- Water Supply -->
+                    <details id="WaterSuppLayer">
+                        <summary>
+                            <input type="checkbox" name="watersup" id="MedicalServices">Water Supply
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="watersup" id="h1">Water Overhead Tank<br>
+                            <input type="checkbox" name="watersup" id="h2"> Water Treatment Plant<br>
+                            <input type="checkbox" name="watersup" id="h3">Landmark <br>
+                            <input type="checkbox" name="watersup" id="h4">Water Pipline <br>
+                            <input type="checkbox" name="watersup" id="h5">Water Supply Point <br>
+                            <input type="checkbox" name="watersup" id="h6">Tubewells <br>
+                        </div>
+                    </details>
+                    <!-- Streetlight -->
+                    <details id="StreetLightLayer">
+                        <summary>
+                            <input type="checkbox" name="stlight" id="Recreation">Street Light
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="streetlight" id="k1">Street Light
+                        </div>
+                    </details>
+                    <!-- Sewerage -->
+                    <details id="SewerageLayer">
+                        <summary>
+                            <input type="checkbox" name="Sewerage" id="ReligiousPlaces">Sewerage
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="Sewerage" id="l1">Community Toilets <br>
+                            <input type="checkbox" name="Sewerage" id="l2">Public Toilets
+                        </div>
+                    </details>
+                    <!-- Railway -->
+                    <details id="RailwayLayer">
+                        <summary>
+                            <input type="checkbox" name="Railway" id="EducationalServices">Railway
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="Railway" id="m1">Railway Line <br>
+                            <!-- <input type="checkbox" name="Railway" id="railwaystat">Railway Station -->
+                        </div>
+                    </details>
+                    <!-- Emergency -->
+                    <details id="EmergencyLayer">
+                        <summary>
+                            <input type="checkbox" name="Emeserv" id="BankingandPostalServices">Emergecy Services
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="firestat" id="n1" />Fire Station<br />
+                            <input type="checkbox" name="firestat" id="n2" />Police Stations<br />
+                            <input type="checkbox" name="firestat" id="n3" />Police Chowki
+                        </div>
+                    </details>
+                    <!-- Education -->
+                    <details id="EducationLayer">
+                        <summary>
+                            <input type="checkbox" name="EmesEducationerv" id="FireAndEmergency">Education
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="primary" id="o1">Primary
+                        </div>
+                    </details>
+                    <!-- SOLID WASTE MANAGEMENT -->
+                    <details id="SolidWasteLayer">
+                        <summary>
+                            <input type="checkbox" name="SWM" id="EstateManagement">Solid Waste Management
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="SWMContainer" id="p1">SWM Container <br>
+                            <input type="checkbox" name="SWMTransferStation" id="p2">SWM Transfer Station
+                        </div>
+                    </details>
+                    <!-- Medical Services -->
+                    <details id="MedicalLayer">
+                        <summary>
+                            <input type="checkbox" name="ms" id="AdvertisementAndHordings">Medical Services
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="bloodbank" id="q1">Blood Banks <br>
+                            <input type="checkbox" name="Homeopathic" id="q2">Homeopathic <br>
+                            <input type="checkbox" name="MedicalStore" id="q3">Medical Stores <br>
+                            <input type="checkbox" name="Clinic" id="q4">Clinic <br>
+                            <input type="checkbox" name="surgshop" id="q5">Surgical Shops <br>
+                            <input type="checkbox" name="vetclin" id="q6">Veterinary Clinic <br>
+                            <input type="checkbox" name="Hospital" id="q7">Hospital <br>
+                        </div>
+                    </details>
+                    <!-- ABD -->
+                    <details id="ABDLayer">
+                        <summary>
+                            <input type="checkbox" name="ms" id="DevelopmentPlan">ABD
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="ABDArea" id="r1">ABD Area <br>
+                            <input type="checkbox" name="ABDWardBound" id="r2">ABD Ward Bound <br>
+                            <input type="checkbox" name="ABDConnDrain" id="r3">ABD Connectivity Drain <br>
+                            <input type="checkbox" name="ABDGreenBuilding" id="r4">ABD Green Building <br>
+                            <input type="checkbox" name="surgshop" id="r5">ABD MDDA Park
+                        </div>
+                    </details>
+                    <!-- Covid -->
+                    <details id="CovidLayer">
+                        <summary>
+                            <input type="checkbox" name="Covid" id="Solid">Covid
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="Covid" id="s1">Islolation Ward
+                        </div>
+                    </details>
+                    <!-- Others -->
+                    <details id="OtherLayer">
+                        <summary>
+                            <input type="checkbox" name="other" id="Green">Other
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="other" id="t1">Education
+                        </div>
+                    </details>
+                    <!-- SCADA -->
+                    <details id="SCADALayer">
+                        <summary>
+                            <input type="checkbox" name="SCADA" id="RoadandTrafficSystems">SCADA
+                        </summary>
+                        <div style="padding-left: 7%;">
+                            <input type="checkbox" name="SCADA" id="u1">Tubewell <br>
+                            <input type="checkbox" name="SCADA" id="u2">Reservoir
+                        </div>
+                    </details>
+                    <!-- <div id="BookmarkShow"></div> -->
+                    <table>
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="map" class="map"></div> -->
+    <div id="mySidenav" class="sidenav" style="z-index: 2;position: absolute;">
+        <i class="fa fa-tachometer" style="color: #333;font-size: 25px ;">  GIS UTILITIES </i>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav1()" style="color: #333;">&times;</a>
+        <div style="z-index: 1; margin-left: 5%; margin-bottom: 10%; background: white; overflow-y: scroll; height:80%; width: 90%;">
+            <br>
+            <!-- <details>
+                <summary>Around Me</summary>
+                <div style="padding-left: 25px;">
+                    <input type="checkbox" name="Aroundme" id="EmergencyServices"> Emergency Services
+                    <div id="ShowHospital" style="color: white;font-size: 14px;">
+                    </div>
+                    <div>
+                        <table id="TShow"></table>
+                    </div>
+                    <input type="checkbox" name="Aroundme1" id="TouristAttraction"> Tourist Attraction <br>
+                    <div id="TouristShow" style="color: white;font-size: 14px;"></div>
+                    <div>
+                        <table id="TourShow"></table>
+                    </div>
+                    <input type="checkbox" name="Aroundme2" id="FunEntertainment"> Fun & Entertainment <br>
+                    <div id="FunEnterShow" style="color: white;font-size: 14px;"></div>
+                    <div>
+                        <table id="FunShow"></table>
+                    </div>
+                    <div>
+                        <input type="number" name="LengthArea" id="lengtharea" required placeholder="In Meter" class="form-control">
+                    </div>
+                    <input type="button" class="btn btn-success" value="Go!" id="GoAroundme">
+                    <input type="button" class="btn btn-danger" value="Clear!" id="ClearAround">
+                </div>
+            </details> -->
+            <details>
+                <summary> <i class="fa fa-bank" style="font-size: 20px;color: #333;"></i> Landmarks</summary>
+                <div style="overflow-y: scroll; height:120px; width: 100%;">
+                    <!-- <input type="checkbox" name="landmark" id="">ATM <br>
+                    <input type="checkbox" name="landmark" id="">Bank <br>
+                    <input type="checkbox" name="landmark" id="">Blood Bank <br>
+                    <input type="checkbox" name="" id="">Bus Deport <br>
+                    <input type="checkbox" name="" id="">Bus Stop <br>
+                    <input type="checkbox" name="" id="">CCTV Location <br>
+                    <input type="checkbox" name="" id="">Clinic <br>
+                    <input type="checkbox" name="" id="">Club <br>
+                    <input type="checkbox" name="" id="">CNG Station <br>
+                    <input type="checkbox" name="" id="">Collage <br>
+                    <input type="checkbox" name="" id="">Dispensary <br>
+                    <input type="checkbox" name="" id="">Fire Station <br>
+                    <input type="checkbox" name="" id="">Garden <br>
+                    <input type="checkbox" name="" id="">Govermment Office <br>
+                    <input type="checkbox" name="" id="">Heritage <br>
+                    <input type="checkbox" name="" id="">Homeopathic Clinic <br> -->
+                    <input type="checkbox" name="LandHospital" id="Hospital">Hospital <br>
+                    <input type="checkbox" name="PrimarySchool" id="BloodBank">Primary School <br>
+                    <input type="checkbox" name="LandBank" id="Bank">Banks<br>
+                    <input type="checkbox" name="LandATM" id="ATM">ATMs<br>
+                    <!-- <input type="checkbox" name="" id="">Hotel <br>
+                    <input type="checkbox" name="" id="">ITMS Location <br>
+                    <input type="checkbox" name="" id="">Kabristan <br>
+                    <input type="checkbox" name="" id="">Library <br>
+                    <input type="checkbox" name="" id="">LPG Station <br>
+                    <input type="checkbox" name="" id="">Market <br>
+                    <input type="checkbox" name="" id="">Mazzar <br>
+                    <input type="checkbox" name="" id="">Medical Store <br>
+                    <input type="checkbox" name="" id="">Monuments <br>
+                    <input type="checkbox" name="" id="">Museum <br>
+                    <input type="checkbox" name="" id="">Parking <br>
+                    <input type="checkbox" name="" id="">Pet Center <br>
+                    <input type="checkbox" name="" id="">Petrol Pump <br>
+                    <input type="checkbox" name="" id="">Police Chowki <br>
+                    <input type="checkbox" name="" id="">Police Station <br>
+                    <input type="checkbox" name="" id="">Public Toilet <br>
+                    <input type="checkbox" name="" id="">Railway Station <br>
+                    <input type="checkbox" name="" id="">Restaurant <br>
+                    <input type="checkbox" name="" id="">Road <br>
+                    <input type="checkbox" name="" id="">School <br>
+                    <input type="checkbox" name="" id="">Sewerage Manholes<br>
+                    <input type="checkbox" name="" id="">Sewerage Pipeline <br>
+                    <input type="checkbox" name="" id="">Sewerage Pumping Station <br>
+                    <input type="checkbox" name="" id="">Sewerage Treatment Plant <br>
+                    <input type="checkbox" name="" id="">Shopping Mall <br>
+                    <input type="checkbox" name="" id="">Sports Ground <br>
+                    <input type="checkbox" name="" id="">Stadium <br>
+                    <input type="checkbox" name="" id="">Storm Water Pipeline <br>
+                    <input type="checkbox" name="" id="">Street Light <br>
+                    <input type="checkbox" name="" id="">Surgical Shop <br>
+                    <input type="checkbox" name="" id="">Theatre <br>
+                    <input type="checkbox" name="" id="">Torrent Billing Center <br>
+                    <input type="checkbox" name="" id="">Tourist <br>
+                    <input type="checkbox" name="" id="">Training Institute <br>
+                    <input type="checkbox" name="" id="">University <br>
+                    <input type="checkbox" name="" id="">Veterinary Clinic <br>
+                    <input type="checkbox" name="" id="">Wter Park <br>
+                    <input type="checkbox" name="" id="">Water Pipeline <br> -->
+                    <input type="button" class="btn btn-success" value="Next" id="Nextlandmarks" onclick="ShowLandmark()">
+                    <input type="button" className="btn btn-success" value="Clear" id="Nextlandmarks" onClick="Landclear()" />
+                </div>
+                <div style="display: none;" id="landmarkarea">
+                    <select name="AreaSelect" id="AreaSelect" style="border-radius: 5px;">
+                        <option value="Dehradun">Dehradun</option>
+                        <option value="Rājpur">Rājpur</option>
+                        <option value="Kalanga">Kalanga</option>
+                    </select><br>
+                    <input type="button" value="Go!" class="btn btn-success" id="LandmarksGo">
+                </div>
+                <div id="LandShow" style="font-size: 14px;"></div>
+                @*<div id="LandShow" style="font-size: 14px;"></div>*@
+            </details>
+            <!-- <details>
+                <summary> <i class="fa fa-edit" style="color: #333;font-size: 20px;"></i> Ward Information</summary>
+            </details> -->
+            <details>
+                <summary> <i style="color: #333;font-size: 20px;" class="fa fa-arrows-alt"></i> Find Direction</summary>
+                <input type="checkbox" name="findlocation" id="locfrom">Find Direction From Map Click<br>
+                <input type="checkbox" name="findlocation" id="FindLoc" onclick="forfindcor()"> Find Direction From Coordinates <br>
+            </details>
+            <details>
+                <summary> <i class="fa fa-pie-chart" style="font-size: 20px;color: #333;"></i> Real Time Dashboard</summary>
+                <select name="chrt" id="RealTime">
+                    <option value="Bank">Bank,ATM & Postoffice</option>
+                    <option value="Building">Bulding</option>
+                </select>
+                <input type="button" value="Go!" class="btn btn-success" onclick="DrawChartTest()">
+                <div id="piechart" style="width: 100; height: 100px;display: none;"></div>
+            </details>
+            <details>
+                <summary>
+                    <i class="fa fa-crosshairs" style="color: #333;font-size: 20px;"></i>
+                    <label for="track">
+                        track position
+                        <input id="track" type="checkbox" />
+                    </label>
+                </summary>
+                <p>
+                    position accuracy : <code id="accuracy">
+                    </code>&nbsp;&nbsp; altitude : <code id="altitude"></code>&nbsp;&nbsp; altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp; heading : <code id="heading"></code>&nbsp;&nbsp; speed :
+                    <code id="speed"></code><code id="info"></code>
+                </p>
+
+            </details>
+            <div>
+                <div id="google_translate_element"></div>
+            </div>
+            <div id="CoordinateDataInfo"></div>
+        </div>
+    </div>
+
+    <button class="openbtn bg-dark" id="nav1" onclick="openNav()"><i class="fa fa-th-large"></i></button>
+    <dialog id="FindLocDil" style="width:50%;z-index: 3;position: absolute;text-align: center;">
+        <p style="text-align: end;"><i id="hide" class="fa fa-times-circle" style="font-size: 25px;"></i></p>
+        <div style="width:100%;" id="find">
+            <p style="background-color: cornflowerblue;">Find Location</p>
+            <table style="width: 100%;">
+                <tr>Location From</tr>
+                <tr>
+                    <td style="text-align: center;"><i class="fa fa-map-marker" style="color:#00c2ff;font-size:25px;"></i></td>
+                    <td><input type="text" style="width: 100%;" id="LatF" placeholder="Lat"></td>
+                    <td><input type="text" style="width: 100%;" id="LongF" placeholder="Long"></td>
+
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>Location To</tr>
+                <tr>
+                    <td style="text-align: center;"><i class="fa fa-map-marker" style="color:red;font-size:25px;"></i></td>
+                    <td><input type="text" style="width: 100%;" id="LatT" placeholder="Lat"></td>
+                    <td><input type="text" style="width: 100%;" id="LongT" placeholder="Long"></td>
+                </tr>
+            </table><br>
+            <p>
+                <button style="width: 50%;" id="direction"><i class="fa fa-arrow-circle-right" style="color: royalblue;"></i> Direction</button>
+                <button style="width: 47%;" id="Hide3"><i class="fa fa-paint-brush" style="color: royalblue;" onclick="closefindcor()"></i>Clear</button>
+            </p>
+        </div>
+    </dialog>
+    <!-- Advance Search -->
+    <dialog id="myDialog" style="width:50%;z-index: 3;position: absolute;text-align: center;border: 0.5px dotted #333;">
+        <form action="" method="POST">
+            <label for="advanceLayer">Layer: </label>
+            <select name="Layer" id="Layer">
+                <option value="">--Select Value--</option>
+                <option value="busdepot">Bus Depot</option>
+                <option value="centralgovtbuilding">Central Govt Building</option>
+                <option value="parking">Parking</option>
+                <option value="medicalstore">MedicalStore</option>
+                <option value="hospital">Hospital</option>
+            </select>
+            <br> <br>
+            <!-- <label for="advanceField">Field : </label>
+            <select name="Field" id="Field" onchange="QueryFind()">
+                <option value="">--Select Value--</option>
+            </select><br> <br>
+            <label for="advanceValue">Value : </label>
+            <select id="ValuesFrom" name="ValuesFrom" onchange="ValueFrom()">
+                <option value="">--Select Value--</option>
+            </select> <br> -->
+
+            <div class="form-group col-md-8">
+                <label for="SelectDonw">Select Filter By:</label>
+                <select name="FilterSelect" id="FilterSelect" class="form-control">
+                </select>
+            </div>
+            <div class="form-group col-md-8">
+                <label for="Filter">Filter: </label> <input type="text" name="mySearch" id="mySearch" class="form-control" onkeyup="myFunction()" placeholder="Filter">
+            </div>
+            <input type="button" id="AdBlink" value="OK GO" class="btn bg-success" onclick="AdSearch()">
+            <!--<input type="button" class="btn bg-warning" value="Show Result" id="ShowResult">-->
+            <input type="button" class="btn bg-danger" value="Close" onclick="closeadvance()" id="closeAdvance">
+            <div id="AdvanceSearchShow" style="display:none">
+                <table id="AdvanceSearchShowTable" class="table"></table>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Predefine Query -->
+    <dialog id="PredefineQueryDialog" style="width:50%;z-index: 3;position: absolute;text-align: center;border: 0.5px dotted #333;">
+        <table width=100%>
+            <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>1</td>
+                    <td> <input type="text" name="Layer" id="bloodbank" value="bloodbank" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field1">
+                        <input type="text" name="query" id="query1">
+                        <input type="text" name="Link" id="Link1">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link1').value=window.location.href })()"></td>
+                </form>
+            </tr>
+            <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>2</td>
+                    <td> <input type="text" name="Layer" id="railstation" value="railstation" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field2" style="display: none;">
+                        <input type="text" name="query" id="query2">
+                        <input type="text" name="Link" id="Link2">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link2').value=window.location.href })()"></td>
+                </form>
+            </tr>
+            <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>3</td>
+                    <td> <input type="text" name="Layer" id="firestation" value="firestation" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field3" style="display: none;">
+                        <input type="text" name="query" id="query3">
+                        <input type="text" name="Link" id="Link3">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link3').value=window.location.href })()"></td>
+                </form>
+            </tr>
+            <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>4</td>
+                    <td> <input type="text" name="Layer" id="farmhouse" value="farmhouse" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field4" style="display: none;">
+                        <input type="text" name="query" id="query4">
+                        <input type="text" name="Link" id="Link4">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link4').value=window.location.href })()"></td>
+                </form>
+            </tr>
+            <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>5</td>
+                    <td><input type="text" name="Layer" id="hospitals" value="hospitals" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field5" style="display: none;">
+                        <input type="text" name="query" id="query5">
+                        <input type="text" name="Link" id="Link5">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link5').value=window.location.href })()"></td>
+                </form>
+            </tr>
+            <!-- <tr>
+                <form action="http://localhost:3001/Search" method="POST">
+                    <td>6</td>
+                    <td> <input type="text" name="Layer" id="policechowki" value="policechowki" readonly></td>
+                    <td style="display: none;">
+                        <input type="text" name="Field" value="*" id="Field6" style="display: none;">
+                        <input type="text" name="query" id="query6">
+                        <input type="text" name="Link" id="Link6">
+                    </td>
+                    <td> <input type="submit" class="btn bg-success" value="View Data" onclick="(function(){ document.getElementById('Link6').value=window.location.href })()"></td>
+                </form>
+            </tr> -->
+            <tr>
+                <td></td>
+                <td><input type="button" value="Show Result" id="ShowPreQ" class="btn bg-warning"></td>
+                <td><input type="button" value="Close" id="ClsoePreQ" class="btn bg-danger" onclick="predefinedclose()"></td>
+            </tr>
+        </table>
+        <div id="PreDiv">
+            <table id="PreQShow" border="1" rules="all" width=100%></table>
+        </div>
+    </dialog>
+    @*Around me*@
+    <dialog id="forarounddialog" style=" top: 35%; padding:8px; width: 350px; height: 240px; z-index: 7; border: black; border-radius: 10px">
+        <section style="padding: 9px; text-align: center">
+            <i class="fa fa-exclamation-circle fa-3x" style=" color: goldenrod"></i><br /><br />
+            Please Click on Map to Identify/Point Your Location
+            <br /><br />
+            <button id="dia2Close"
+                    style=" margin-left: 0%; padding: 8px; width: 20%; background-color: #f44336; color: white; font-size: 20px " onClick="closearound()">
+                Ok
+            </button>
+        </section>
+        <p></p>
+    </dialog>
+
+    <!-- Coordinates Dialog-->
+    <dialog id="myFirstDialog" style="background-color:#F4FFEF;border:1px dotted black; z-index: 3;position: absolute;text-align: center;width: 40%;">
+        <label>Latitude</label>
+        <input class="form-control" type="text" name="Lati" id="Lati">
+        <label>Longitude</label>
+        <input class="form-control" type="text" name="Long" id="Long">
+        <br>
+        <button class="btn btn-success" id="Search1" onclick="CoordSearch()">Search</button>
+        <button class="btn btn-danger" id="Hide2" onclick="closecoordi()">Close</button>
+    </dialog>
+    <!-- Bookmark Dialog -->
+    <dialog id="BookDialog" style="background-color:#F4FFEF;border:1px dotted black; z-index: 3;position: absolute;text-align: center;width: 50%;">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="NameBook" id="NameBook">
+        <label for="Description">Description</label>
+        <input class="form-control" type="text" name="DescBook" id="DescBook">
+        <br>
+        <button class="btn btn-success" id="AddBook">Add</button>
+        <button class="btn btn-danger" id="CancelBook">Cancel</button>
+    </dialog>
+    <!-- SEARCHAPI -->
+    <dialog id="AnalyticQuery" style="background-color: #f2f2f2;z-index: 3;position: absolute;text-align: center;">
+    </dialog>
+
+    <button class="openbtn bg-dark" id="nav2" style=" position:absolute; right:0px;cursor:pointer" onclick="openNav1()">&#9776;</button>
+    <div id="map" class="map" style="z-index: 1;position: absolute;"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+    <div id="ShowCoordinatesDetails" style="right: 0; z-index: 4;position: fixed;bottom: 0;"></div>
+    <div id="UserRoleShow" style="right: 1; z-index: 4;position: fixed;bottom: 0;"></div>
+
+    @*<script src="main.js"></script>*@
+    <script src="~/js/main.js"></script>
+
+    <script>
+        //         function Show() {
+        //     var modal = document.getElementById("myModal");
+        //     modal.style.display = "block";
+        // }
+
+        // function Hide() {
+        //     var modal = document.getElementById("myFirstDialog");
+        //     modal.close();
+        // }
+        function forfindcor() {
+            var a = document.getElementById("FindLocDil");
+            a.show();
+        }
+        function closefindcor() {
+            var b = document.getElementById("FindLocDil");
+            a.close();
+        }
+        function advanceopen() {
+            var c = document.getElementById("myDialog");
+            c.show();
+        }
+        function closeadvance() {
+            var f = document.getElementById("myDialog")
+            f.close();
+        }
+        function predefinedopen() {
+            var d = document.getElementById("PredefineQueryDialog");
+            d.show();
+        }
+        function predefinedclose() {
+            var g = document.getElementById("PredefineQueryDialog");
+            g.close();
+        }
+        function findaround() {
+            var dialog = document.getElementById('forarounddialog');
+            dialog.show();
+        }
+        function closearound() {
+            var dialog = document.getElementById('forarounddialog');
+            dialog.close();
+        }
+
+        var coordinate = [];
+        function CoordSearch() {
+            var Lon = parseFloat(document.getElementById("Long").value);
+            var Lat = parseFloat(document.getElementById("Lati").value);
+            console.log(Lon + " " + Lat);
+            var p = new Promise((resolve, reject) => {
+                fetch('https://nominatim.openstreetmap.org/reverse?format=json&lon=' + Lon + '&lat=' + Lat)
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (json) {
+                        console.log(json);
+                        coordinate = [Lon, Lat];
+                        // overlay.setPosition(coordinate);
+
+                        document.getElementById("CoordinateDataInfo").innerHTML = '<div style="font-size:15px">' + json.display_name + '</div>';
+                        /*resolve(Hide());*/
+                        var modal = document.getElementById("myFirstDialog");
+                        modal.close();
+
+                    });
+            })
+        }
+        function ShowBookmark() {
+            var modal = document.getElementById("BookDialog");
+            modal.show();
+        }
+
+
+        function Landclear() {
+            document.getElementById('landmarkarea').style.display = "none";
+            document.getElementById('Bank').checked = false;
+            document.getElementById('ATM').checked = false;
+            document.getElementById('Hospital').checked = false;
+            document.getElementById('BloodBank').checked = false;
+            document.getElementById("LandShow").innerHTML = "";
+
+            return false;
+
+        }
+
+
+        function DrawChartTest() {
+            var SelectChart = document.getElementById("RealTime").value;
+            console.log(SelectChart);
+            if (SelectChart == "Bank") {
+                document.getElementById("piechart").style.display = "";
+                var BankCount, ATMCount, POSToffCount;
+                var p2 = new Promise((resolve, reject) => {
+                    fetch('http://localhost:8082/geoserver/DehradunGIS61/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunGIS61%3Abankforlandmark&maxFeatures=50&outputFormat=application%2Fjson')
+                        .then(function (res) {
+                            res.text().then(function (data) {
+                                var data = JSON.parse(data);
+                                BankCount = data.features.length;
+                                console.log(BankCount);
+                                FetchAtm();
+                            })
+                        });
+                });
+
+                function FetchAtm() {
+                    fetch('http://localhost:8082/geoserver/DehradunGIS60/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunGIS60%3Aatmsforlandmark&maxFeatures=50&outputFormat=application%2Fjson')
+                        .then(function (res) {
+                            res.text().then(function (data) {
+                                var data = JSON.parse(data);
+                                ATMCount = data.features.length;
+                                console.log(ATMCount);
+                                FetchPostOff();
+                            })
+                        });
+                }
+
+                function FetchPostOff() {
+                    fetch('http://localhost:8082/geoserver/DehradunGIS29/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunGIS29%3Apostoffice&maxFeatures=50&outputFormat=application%2Fjson')
+                        .then(function (res) {
+                            res.text().then(function (data) {
+                                var data = JSON.parse(data);
+                                POSToffCount = data.features.length;
+                                console.log(POSToffCount);
+                                DrawingCharti();
+                            })
+                        })
+                }
+
+                function DrawingCharti() {
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+
+                        var data = google.visualization.arrayToDataTable([
+                            ['Task', 'Hours per Day'],
+                            ['BANK', BankCount],
+                            ['ATM', ATMCount],
+                            ['Post Office', POSToffCount]
+                        ]);
+
+                        var options = {
+                            title: 'Bank,ATMs & Post office'
+                        };
+
+                        const chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                        chart.draw(data, options);
+                    }
+                }
+
+            }
+            if (SelectChart == "Building") {
+                document.getElementById("piechart").style.display = "";
+                console.log("BUILDING");
+                var CentralCount, StateCount;
+                var p1 = new Promise((resolve, reject) => {
+                    fetch('http://localhost:8082/geoserver/DehradunGIS35/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunGIS35%3Astate%20government%20office&maxFeatures=50&outputFormat=application%2Fjson')
+                        .then(function (res) {
+                            res.text().then(function (data) {
+                                var data = JSON.parse(data);
+                                StateCount = data.features.length;
+                                console.log(StateCount);
+                                Fetch2();
+                            })
+                        });
+
+                    function Fetch2(params) {
+                        fetch('http://localhost:8082/geoserver/DehradunGIS11/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunGIS11%3Acentral%20government%20buildings&maxFeatures=50&outputFormat=application%2Fjson')
+                            .then(function (res) {
+                                res.text().then(function (data) {
+                                    var data = JSON.parse(data);
+                                    CentralCount = data.features.length;
+                                    console.log(CentralCount);
+                                    DraaeingChart();
+                                })
+                            });
+                    }
+                });
+
+
+                function DraaeingChart() {
+
+
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+
+                        var data = google.visualization.arrayToDataTable([
+                            ['Task', 'Hours per Day'],
+                            ['Central Govt Building', CentralCount],
+                            ['State Govt Building', StateCount]
+                        ]);
+
+                        var options = {
+                            title: 'Building'
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                        chart.draw(data, options);
+                    }
+                }
+            }
+        }
+
+        function ShowLandmark() {
+            document.getElementById("landmarkarea").style.display = "block";
+        }
+
+        function openNav() {
+            document.getElementById("mySidepanel").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidepanel").style.width = "0";
+        }
+
+        function openNav1() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav1() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        function closecoordi() {
+            var e = document.getElementById("myFirstDialog");
+            e.close();
+        }
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+
+        //function updateBox(obj) {
+        //    var index = obj.parentNode.parentNode.rowIndex;
+        //    document.getElementById("tbody").deleteRow(index);
+        //}
+
+        //function Check() {
+        //    document.getElementById("Field").innerHTML = "";
+        //    if (document.getElementById('Layer').value == 'busdepot') {
+        //        document.getElementById("Field").innerHTML += "<option value='*'>*</option><option value='gid'>ID</option><option value='name'>name</option>";
+        //    } else if (document.getElementById('Layer').value == 'bankforlandmark') {
+        //        document.getElementById("Field").innerHTML += " <option value='*'>*</option> <option value='gid'>ID</option><option value='name'>name</option><option value='area'>area</option>";
+        //    } else if (document.getElementById('Layer').value == 'parking') {
+        //        document.getElementById("Field").innerHTML += "  <option value='*'>*</option><option value='gid'>ID</option><option value='name'>name</option>";
+        //    } else if (document.getElementById('Layer').value == 'medicalstore') {
+        //        document.getElementById("Field").innerHTML += " <option value='*'>*</option> <option value='gid'>ID</option><option value='sgovtbuild'>name</option><option value='location'>Location</option><option value='area'>Area</option>";
+        //    }
+        //}
+        //var Field, Data;
+
+        //function QueryFind() {
+        //    document.getElementById("Link").value = window.location.href;
+        //    Field = document.getElementById("Field").value;
+        //    if (document.getElementById('Layer').value == 'busdepot') {
+        //        var p = new Promise((resolve, reject) => {
+        //            fetch('http://localhost:8080/geoserver/Dehradun10/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Dehradun10%3Abusdepot&maxFeatures=50&outputFormat=application%2Fjson')
+        //                .then(function (res) {
+        //                    res.text().then(function (data) {
+        //                        Data = JSON.parse(data);
+        //                        //Data = Data.features;
+        //                        console.log(Data);
+        //                        ChangeVal();
+        //                    })
+        //                });
+        //        });
+        //    }
+        //    if (document.getElementById('Layer').value == 'medicalstore') {
+        //        var p = new Promise((resolve, reject) => {
+        //            fetch('http://localhost:8080/geoserver/Dehradun23/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Dehradun23%3Amedicalstore&maxFeatures=50&outputFormat=application%2Fjson')
+        //                .then(function (res) {
+        //                    res.text().then(function (data) {
+        //                        Data = JSON.parse(data);
+        //                        //Data = Data.features;
+        //                        console.log(Data);
+        //                        ChangeVal();
+        //                    })
+        //                });
+        //        });
+        //    }
+        //    if (document.getElementById('Layer').value == 'bankforlandmark') {
+        //        var p = new Promise((resolve, reject) => {
+        //            fetch('http://localhost:8080/geoserver/DehradunBank/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=DehradunBank%3Abankforlandmark&maxFeatures=50&outputFormat=application%2Fjson')
+        //                .then(function (res) {
+        //                    res.text().then(function (data) {
+        //                        Data = JSON.parse(data);
+        //                        //Data = Data.features;
+        //                        console.log(Data);
+        //                        ChangeVal();
+        //                    })
+        //                });
+        //        });
+        //    }
+        //    //document.getElementById("SHOWW").innerHTML = "";
+        //    //alert("HII");
+        //    //document.getElementById("query").value = "\"" + document.getElementById("Field").value + "\" ";
+        //    document.getElementById("query").value = Field;
+        //}
+
+        //function ChangeVal() {
+        //    document.getElementById("ValuesFrom").innerHTML = "";
+        //    console.log(Field);
+        //    // if (Field = "gid") {
+        //    //     for (var i = 0; i < Data.features.length; i++) {
+        //    //         document.getElementById("ValuesFrom").innerHTML += "<option value='" + Data.features[i].properties.gid + "''>" + Data.features[i].properties.gid + " </option>";
+        //    //     }
+        //    // }
+        //    if (Field == "name") {
+        //        for (var i = 0; i < Data.features.length; i++) {
+        //            document.getElementById("ValuesFrom").innerHTML += "<option value='" + Data.features[i].properties.name + "''>" + Data.features[i].properties.name + " </option>";
+        //        }
+        //    }
+        //    if (Field == "sgovtbuild") {
+        //        for (var i = 0; i < Data.features.length; i++) {
+        //            document.getElementById("ValuesFrom").innerHTML += "<option value='" + Data.features[i].properties.sgovtbuild + "''>" + Data.features[i].properties.sgovtbuild + " </option>";
+        //        }
+        //    }
+        //    if (Field == "location") {
+        //        for (var i = 0; i < Data.features.length; i++) {
+        //            document.getElementById("ValuesFrom").innerHTML += "<option value='" + Data.features[i].properties.location + "''>" + Data.features[i].properties.location + " </option>";
+        //        }
+        //    }
+        //    if (Field == "area") {
+        //        for (var i = 0; i < Data.features.length; i++) {
+        //            document.getElementById("ValuesFrom").innerHTML += "<option value='" + Data.features[i].properties.area + "''>" + Data.features[i].properties.area + " </option>";
+        //        }
+        //    }
+        //}
+
+        //function ValueFrom() {
+        //    console.log(document.getElementById("ValuesFrom").value);
+        //    document.getElementById("query").value += "=" + document.getElementById("ValuesFrom").value;
+
+        //}
+
+        //function Cal1() {
+        //    document.getElementById("query").value += document.getElementById("equal").value;
+        //}
+
+        //function Cal2() {
+        //    document.getElementById("query").value += document.getElementById("notequal").value;
+        //}
+
+        //function Cal3() {
+        //    document.getElementById("query").value += document.getElementById("like").value;
+        //}
+
+        //function Cal4() {
+        //    document.getElementById("query").value += document.getElementById("gt").value;
+        //}
+
+        //function Cal5() {
+        //    document.getElementById("query").value += document.getElementById("gtequal").value;
+        //}
+
+        //function Cal6() {
+        //    document.getElementById("query").value += document.getElementById("perc").value;
+        //}
+
+        //function Cal7() {
+        //    document.getElementById("query").value += document.getElementById("lt").value;
+        //}
+
+        //function Cal8() {
+        //    document.getElementById("query").value += document.getElementById("ltequal").value;
+        //}
+
+        //function Cal9() {
+        //    document.getElementById("query").value += document.getElementById("not").value;
+        //}
+
+        //function Cal10() {
+        //    document.getElementById("query").value += document.getElementById("And").value;
+        //}
+
+        //function Cal11() {
+        //    document.getElementById("query").value += document.getElementById("Or").value;
+        //}
+
+        function ZoomCHECK(link) {
+            window.location.href(link, "_self");
+        }
+        var count = 0;
+
+        function changenavbar() {
+            if (count == 0) {
+                document.getElementById("changenav").classList.remove('bg-dark');
+                document.getElementById("changenav").classList.add('bg-success');
+                document.getElementById("changenavfoot").classList.remove('bg-dark');
+                document.getElementById("changenavfoot").classList.add('bg-success');
+                document.getElementById("nav1").classList.remove("bg-dark");
+                document.getElementById("nav2").classList.remove("bg-dark");
+                document.getElementById("nav1").classList.add("bg-success");
+                document.getElementById("nav2").classList.add("bg-success");
+                count = 1;
+            } else {
+                count = 0;
+                document.getElementById("changenav").classList.add('bg-dark');
+                document.getElementById("changenavfoot").classList.add('bg-dark');
+                document.getElementById("nav1").classList.remove("bg-success");
+                document.getElementById("nav2").classList.remove("bg-success");
+                document.getElementById("nav1").classList.add("bg-dark");
+                document.getElementById("nav2").classList.add("bg-dark");
+            }
+        }
+
+        // function changenavbar1() {
+        //     //document.getElementById("changenav").classList.remove('bg-warning');
+
+        // }
+
+        function openNav2() {
+            document.getElementById("mySidenav1").style.width = "250px";
+        }
+
+        function closeNav2() {
+            document.getElementById("mySidenav1").style.width = "0";
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en'
+            }, 'google_translate_element');
+            var x = document.getElementsByTagName("table");
+            console.log(x);
+        }
+    </script>
+
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        if (localStorage.getItem("temp") == 1) {
+            document.getElementById("AdvanceSearch").style.display = "block";
+        } else {
+            document.getElementById("AdvanceSearch").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

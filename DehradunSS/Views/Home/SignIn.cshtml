@@ -1,0 +1,68 @@
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+@*<div style="float: right;width: 90%; background-color: white;">
+        <div style="float:left;text-align: center;" class="my-5">
+            <img style="height: 50%;float:left;text-align: center;" src="/public/user.png" alt="smart1"><br>
+        </div><br><br>
+        <div class="card card-signin my-5">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="color: green;">Member Login</h5>
+                <form class="form-signin" action="@Url.Page("/DehradunSS/SignIn")" method="POST" onsubmit="Test2()">
+                    <div class="form-label-group"><input required type="text" asp-for="@Model.User.Username" class="form-control" placeholder="Enter Username"></div><br>
+                    <div class="form-label-group"><input required type="password" asp-for="@Model.User.Password" class="form-control" placeholder="Enter Password"></div><br>
+                    <div><a href="/DehradunSS/ForGotPass"><label for="">Forgot Password</label></a></div>
+                    <input type="submit" class="btn btn-lg btn-block text-uppercase text-light" style="background-color: green; width: 30%;" value="SIGN IN">
+                    <hr class="my-4">
+                </form>
+                <a href="/DehradunSS/SignUp">
+                    <button class="btn btn-lg btn-dark btn-block text-uppercase" type="submit">Sign Up</button>
+                </a>
+            </div>
+        </div>
+    </div>*@
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="~/css/SignIN.css" rel="stylesheet" />
+<center>
+<h3 style="color: grey; margin-top: 80px;">ENTER YOUR CREDENTIALS BELOW</h3>
+<h4>LOGIN TO YOUR ACCOUNT</h4>
+    </center>
+<div class="container" class="col-md-12">
+    <div class="img" class="col-md-6">
+        <img src="~/public/loginimg.png" />
+    </div>
+    <div class="login-content" class="col-md-6">
+        <form method="POST" action="/Home/SignIn">
+
+            <h2 class="title">Member Login</h2>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5></h5>
+                    <input type="text" class="input" id="username" name="username" placeholder="UserName">
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5></h5>
+                    <input type="password" class="input" id="password" name="password" placeholder="Password">
+                </div>
+            </div>
+            <a href="/Home/ForGotPass">Forgot Password?</a>
+            <input type="submit" for class="btn5" value="Sign In">
+            <a href="/Home/SignUp"><input type="button" class="btn5" value="Sign Up"></a>
+        </form>
+    </div>
+</div>
+<script>
+    function Test2() {
+        //alert("Hii");
+        localStorage.setItem("temp", 1);
+    }
+</script>

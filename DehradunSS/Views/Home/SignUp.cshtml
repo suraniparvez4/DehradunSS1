@@ -1,0 +1,193 @@
+﻿<link href="~/css/SignUp.css" rel="stylesheet" />
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<br /><br /><br /><br>
+<div id="backcont" style="z-index: 1;">
+
+
+    <figcaption id="figcap1" style="color: grey;font-family:Arial;margin-left: 5%;font-size: small;">
+        ENTER YOUR
+        CREDENTIALS BELOW
+    </figcaption>
+    <figcaption id="figcap1"
+                style="color: #434a54;font-family:Arial;margin-left: 5%;font-size: x-large;font-weight: bold;">
+        CREATE YOUR
+        ACCOUNT
+    </figcaption>
+    <br><br>
+    <div style="width:100%;float: left;margin-left:5%;">
+        <span style=" color:#6c86db;font-size: x-large;font-weight: bold;text-decoration: underline;">
+            Register
+        </span><br><br>
+                   <form method="POST" action="/Home/Create">
+                       <div id="tablebeforereponsive">
+                           <table style="width: 100%;">
+                               <tr>
+                                   <td>
+                                       <label style="margin-left: 3%;color: #5f69c5">
+                                           First Name <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br><i class="fa fa-user" aria-hidden="true"></i> <input type="text" placeholder="First Name" id="Fname" name="Fname"
+                                                                                                        style="width: 80%;padding: 1%;color: #5f69c5">
+                                   </td>
+                                   <td>
+                                       <label style="margin-left: 3%;color: #5f69c5">
+                                           Last Name <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br><i class="fa fa-user" aria-hidden="true"></i> <input type="text" placeholder="Last Name" id="Lname" name="Lname"
+                                                                                                        style="width: 80%;padding: 1%;">
+                                   </td>
+                               </tr>
+                           </table>
+                           <br>
+                           <table style="width: 100%; box-sizing: border-box;">
+                               <tr>
+                                   <td>
+                                       <label style="margin-left: 3%; color: #5f69c5">
+                                           User Name <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br><i class="fa fa-user" aria-hidden="true"></i> <input type="text" placeholder="User Name" id="username" name="username"
+                                                                                                        style="width: 80%;padding: 1%;color: #5f69c5">
+                                   </td>
+                                   <td>
+                                       <label style="margin-left: 3%;color: #5f69c5">
+                                           Mobile No. <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br> <i class="fa fa-phone" aria-hidden="true"></i> <input type="text" placeholder="Mobile No." id="Mobno" name="Mobno"
+                                                                                                          style="width: 80%;padding: 1%;">
+                                   </td>
+                               </tr>
+                           </table>
+                           <br>
+                           <table style="width: 100%; box-sizing: border-box;">
+                               <tr>
+                                   <td>
+                                       <label style="margin-left: 3%;color: #5f69c5">
+                                           Email <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br><i class="fa fa-envelope" aria-hidden="true"></i> <input type="text" id="Email" name="Email"
+                                                                                                            placeholder="Email Address" style="width: 80%;padding: 1%;">
+                                   </td>
+                                   <td>
+                                       <label style="margin-left: 3%;color: #5f69c5">
+                                           Password <sup>
+                                               <i class="fa fa-asterisk" aria-hidden="true"
+                                                  style="font-size: xx-small;color: red;"></i>
+                                           </sup>
+                                       </label><br> <i class="fa fa-phone" aria-hidden="true"></i> <input type="Password" placeholder="Password" id="Password" name="Password"
+                                                                                                          style="width: 80%;padding: 1%;">
+                                   </td>
+                               </tr>
+                           </table><br>
+                           @*<table style="width: 100%; box-sizing: border-box;">
+                <tr>
+                    <td>
+                        <label style="margin-left: 2%;color: #5f69c5">
+                            Captcha <sup>
+                                <i class="fa fa-asterisk" aria-hidden="true"
+                                   style="font-size: xx-small;color: red;"></i>
+                            </sup>
+                        </label><br><br><i class="fas fa-sync" onclick="CaptchGen()"></i><input type="text" id="EnterCaptch"><input type="text" id="Captch">
+                    </td>
+                </tr>
+
+            </table>*@
+
+                           <!-- <table style="width: 100%; box-sizing: border-box;">
+            <tr>
+                <td><label style="margin-left: 1%;"><input type="checkbox"> I agree to the Terms and Conditions</td>
+            </tr>
+
+        </table> -->
+
+                           <br>
+                           <table style="width: 100%; box-sizing: border-box;">
+                               <tr>
+                                   <td>
+                                       <input type="submit" value="SignUp" style="color:white;background-color: #5d5fcc;border-radius: 100px;text-decoration: none;padding: 2% 2%;font-weight: bold;margin-left: 1%;">
+                                       </a>
+                                   </td>
+                                   <td><span style="float: right;margin-right: 10%;">Already Registered ?<a href="/Home/SignIn" style="color: grey;">Sign in</a> </span></td>
+                               </tr>
+
+                           </table>
+                       </div>
+                   </form>
+    </div>
+</div>
+
+@*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>*@
+<script>
+    //function CaptchGen() {
+    //    var a = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    //    console.log(a.length);
+    //    max = 62;
+    //    var str = "";
+    //    for (var i = 0; i < 5; i++) {
+    //        num = Math.floor(Math.random() * max);
+    //        str += a[num];
+    //    }
+    //    //console.log(str);
+    //    temp = str;
+    //    document.getElementById("Captch").value = str;
+    //}
+    //CaptchGen();
+
+    //function CheckCaptch() {
+    //    if (document.getElementById("EnterCaptch").value != document.getElementById("Captch").value) {
+    //        alert("Invalid Captch");
+    //        return false;
+    //    } else {
+    //        return true;
+    //    }
+    //}
+    var pass = document.getElementById("Password").value;
+    var passVal = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/;
+    console.log(pass.match(passVal));
+    if (pass.match(passVal)) {
+        return true;
+    }
+    else {
+        alert("Enter Strong Password");
+        return false;
+    }
+</script>
+@*<script>
+        function CaptchGen() {
+            var a = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+            console.log(a.length);
+            max = 62;
+            var str = "";
+            for (var i = 0; i < 5; i++) {
+                num = Math.floor(Math.random() * max);
+                str += a[num];
+            }
+            //console.log(str);
+            temp = str;
+            document.getElementById("Captch").value = str;
+        }
+        CaptchGen();
+
+        function CheckCaptch() {
+            if (document.getElementById("EnterCaptch").value != document.getElementById("Captch").value) {
+                alert("Invalid Captch");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>*@

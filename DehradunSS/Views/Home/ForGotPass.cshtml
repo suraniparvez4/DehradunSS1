@@ -1,0 +1,32 @@
+﻿<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .btn1 {
+        border: 2px solid rgba(103, 192, 103, 0.75);
+        border-radius: 40px;
+    }
+</style>
+<br /><br /><br /><br />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<div style="margin-left:130px">
+<div style="float: left; padding-left: 8%;">
+    <img style="height: 50%;float:left;text-align: center;" src="/public/user.png" alt="smart1"><br>
+</div>
+<div class="container my-5">
+    <form action="/Home/Send" method="POST">
+        <div class="form-row">
+            <div class="form-group col-md-6" style="padding-left: 2%;">
+                <h4 class="card-title" style="color: green;">Forgot Username / Password</h4><br>
+                <label for="">Email</label>
+                <input type="text" class="form-control"  placeholder="Email" required><br>
+                <input type="submit" class="btn btn1 text-light" style="background-color: green; width: 30%;" value="Submit">
+            </div>
+        </div>
+    </form>
+</div>
+    </div>
